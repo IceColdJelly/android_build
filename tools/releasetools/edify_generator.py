@@ -106,6 +106,35 @@ class EdifyGenerator(object):
     self.script.append('set_perm(0, 0, 0777, "/tmp/modelid_cfg.sh");')
     self.script.append(('run_program("/tmp/modelid_cfg.sh", "%s");' % command))
 
+  def IceOverlay(self, command):
+    self.script.append('### Overlay script')
+    self.script.append('package_extract_dir("setup", "/system/setup");')
+    self.script.append('set_perm_recursive(0, 2000, 0755, 0755, "/system/setup");')
+    self.script.append('run_program("/system/setup/overlay");')
+    self.script.append('### End Overlay')
+
+  def WipeCache(self, command):
+    self.script.append('ui_print("wiping /cache ...");')
+    self.script.append('unmount("/cache");')
+    self.script.append('format("ext4", "EMMC", "/dev/block/mmcblk0p13", "0", "/cache");')
+    self.script.append('ui_print("wiping dalvik-cache ...");')
+    self.script.append('mount("ext4", "EMMC", "/dev/block/mmcblk0p15", "/data");')
+    self.script.append('delete_recursive("/data/dalvik-cache");')
+    self.script.append('unmount("/data");')
+
+  def WelcomeText(self, command):
+    self.script.append('ui_print(" ");')
+    self.script.append('ui_print("************************************************");')
+    self.script.append('ui_print("************************************************");')
+    self.script.append('ui_print(" ");')
+    self.script.append('ui_print("             IceCold team presents              ");')
+    self.script.append('ui_print(" ");')
+    self.script.append('ui_print("                  IceColdJelly                  ");')
+    self.script.append('ui_print(" ");')
+    self.script.append('ui_print(" ");')
+    self.script.append('ui_print("************************************************");')
+    self.script.append('ui_print("************************************************");')
+
   def ShowProgress(self, frac, dur):
     """Update the progress bar, advancing it over 'frac' over the next
     'dur' seconds.  'dur' may be zero to advance it via SetProgress
