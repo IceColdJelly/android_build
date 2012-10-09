@@ -417,8 +417,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   script.WelcomeText("")
 
-  script.WipeCache("")
-
   script.IceOverlay("")
 
   script.ShowProgress(0.2, 10)
